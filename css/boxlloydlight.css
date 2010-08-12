@@ -1,0 +1,205 @@
+@charset "utf-8";
+
+#boxLloydLight{
+    position:absolute;
+    left:0;
+    top:0;
+	z-index: 100;
+    width: 100%;
+    height: 100%;
+} 
+
+#boxLloydLight *{
+    margin: 0;
+    padding: 0;
+    border: none;
+	text-align: center;
+	line-height: 0;
+    background: no-repeat scroll 0 0 transparent;
+} 
+
+#boxLloydLight .overlay{ 
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 90;
+	width: 100%;
+	height: 500px;
+}
+
+#boxLloydLight .inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+}
+
+#boxLloydLight .mainBox{ 
+    position: relative;
+    margin: 0 auto;
+}
+
+#boxLloydLight .mainBoxInner {
+    position: relative;
+    border: 1px solid #000;
+    margin: 0 auto;
+    -moz-box-shadow: 5px 5px 5px #000;
+    -webkit-box-shadow: 5px 5px 5px #000;
+    box-shadow: 5px 5px 5px #000;
+    /* For IE 8 */
+    -s-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#000000')";
+    /* For IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#000000');
+}
+
+#boxLloydLight .loading{ 
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+    background-image: url(../images/boxlloydlight/loading.gif) ;
+    background-position: 50% 50%;
+}
+
+#boxLloydLight .navi{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+}
+
+#boxLloydLight .navi a {
+    outline: none;
+}
+
+#boxLloydLight .close, #boxLloydLight .prev, #boxLloydLight .next {
+	width: 60px;
+	height: 60px;
+    zoom: 1;
+	display: block;
+}
+
+#boxLloydLight .close{ 
+    position: absolute;
+    top: -15px;
+	right: -15px; 
+    background-image: url('../images/boxlloydlight/close.png');
+    background-position: right top;
+}
+
+#boxLloydLight .prev{ 
+    position: absolute;
+    bottom: 5%;
+	left: -19px; 
+    background-image: url('../images/boxlloydlight/prev.png');
+    background-position: left bottom;
+}
+
+#boxLloydLight .next{ 
+    position: absolute;
+    bottom: 5%;
+	right: -24px; 
+    background-image: url('../images/boxlloydlight/next.png');
+    background-position: right bottom;
+}
+
+#boxLloydLight .dataBox{
+    margin: 0 auto;
+    overflow: visible;
+}
+
+#boxLloydLight .dataBoxInner{
+    position: relative;
+	font-size: 12px;
+    line-height: 3em;
+    height: 100%;
+    width: 100%;
+}
+
+#boxLloydLight .caption {
+    position: absolute;
+    display: block; 
+    width: 60%;
+    font-weight: bold;
+    top: 0;
+    left: 20%;
+    color: #fff;
+}
+
+#boxLloydLight .currentNum {
+    position: absolute;
+	display: block;
+    width: 20%;
+    top: 0;
+    right: 0;
+	color: #fff; 
+}			
+
+#boxLloydLight .thumbBox{  
+    position: relative;
+    margin:0 auto;
+}
+
+#boxLloydLight .thumbBoxInner{
+    position: relative;
+    overflow: hidden;
+    margin: 0px auto;
+    z-index: 100;
+}
+
+#boxLloydLight .thumbBox .prev{  
+    left: 0;
+    top: 0;
+    background-position: 50% 50%;
+    background-image: url('../images/boxlloydlight/thumb_prev.png');
+}
+
+#boxLloydLight .thumbBox .next{  
+    right: 0;
+    top: 0;
+    background-position: 50% 50%;
+    background-image: url('../images/boxlloydlight/thumb_next.png');
+}
+
+
+
+#boxLloydLight .thumbImageBox{  
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+}
+
+#boxLloydLight .thumbImageBox a{  
+    float: left;
+    margin: 0;
+}
+
+#boxLloydLightHover .zoom{  
+    position : absolute;
+    width : 20px;
+    height : 15px;
+    bottom : 2px;
+    right : 2px;
+    background: no-repeat scroll 0 0 transparent;
+    background-image: url('../images/boxlloydlight/zoom_small.png');
+}
+
+#boxLloydLightHover .bg{   
+    position : absolute;
+    width : 100%;
+    height : 20px;
+    bottom : 0;
+    left : 0;
+    background-color : #fff;
+}
+
+
+.boxLloydLightTransfer{ 
+   
+    background-color: #000;
+}
