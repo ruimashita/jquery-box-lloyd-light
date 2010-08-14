@@ -70,8 +70,10 @@
 
                 thumbBoxMarginHeight: 10,
                 // thumbnail image size . default 75 (px).
-                thumbImageSize:         60,
+                thumbImageSize:         75,
+                thumbImageOpacity:         0.5,
                 thumbImageMarginSize:   2,
+                thumbTransferSpeed:    200,
 			    // Configuration related to texts in caption. For example: Image 2 of 8. You can alter either "Image" and "of" texts.
                 txtImage:				'',	// (string) Specify text "Image"
 			    txtOf:					'/'		// (string) Specify text "of"
@@ -588,7 +590,7 @@
 		resizeThumbImage: function(thumbImageObj, intThumbImageWidth, intThumbImageHeght) {
             var aspect =  intThumbImageWidth / intThumbImageHeght ;
             if ( intThumbImageWidth < intThumbImageHeght) {
-                thumbImagebj.css({
+                thumbImageObj.css({
                     height: 'auto',
                     width: this.options.thumbImageSize,
                     marginTop: - Math.ceil( 1/aspect * this.options.thumbImageSize - this.options.thumbImageSize)/2
@@ -608,10 +610,11 @@
 		 *
 		 */
         showThumbImage: function() {
-            var self = this;
-            var i = 0;
-            var thumbImageBoxAObjs = $('.thumbImageBox a', self.bllObj);
-            var thumbImageBoxImgObjs = $('.thumbImageBox a img', self.bllObj);
+            var self = this,
+                i = 0,
+                thumbImageBoxAObjs = $('.thumbImageBox a', self.bllObj),
+                thumbImageBoxImgObjs = $('img', thumbImageBoxAObjs),
+                imgObjs = $('img', this.objs);
             
             // this.objs.eq(i).effect(
             //     "transfer",
@@ -635,48 +638,50 @@
             //             arguments.callee);
             //     });
 
-            this.objs.eq(i).boxLloydLightTransfer(
+            imgObjs.eq(i).boxLloydLightTransfer(
                 {to: thumbImageBoxAObjs.eq(i),
                  className: "boxLloydLightTransfer"},
-                100,
+                self.options.thumbTransferSpeed,
                 function(){
-                    thumbImageBoxImgObjs.eq(i).fadeTo(1000, 0.3);
+                    thumbImageBoxImgObjs.eq(i).fadeTo(1000, self.options.thumbImageOpacity);
                     i++;
                     // if completed
-                    if (i == self.imageArray.length){
-                        thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(1000, 1);
+                    if ( i == self.imageArray.length){
+                        thumbImageBoxImgObjs.eq(self.activeImage).fadeTo(1000, 1);
                     }
-                    self.objs.eq(i).boxLloydLightTransfer(
+                    imgObjs.eq(i).boxLloydLightTransfer(
                         {to: thumbImageBoxAObjs.eq(i),
                          className: "boxLloydLightTransfer"},
-                        100,
+                        self.options.thumbTransferSpeed,
                         arguments.callee);
                 });
 
         },
 
         setThumbEvent: function(){
-            var self = this;
+            var self = this,
+            thumbImageBoxAObjs = $('.thumbImageBox a'),
+            thumbImageBoxImgObjs = $('img', thumbImageBoxAObjs);
+            
             // add click event
-            $('.thumbImageBox a').bind('click' ,function(event){
+            thumbImageBoxAObjs.bind('click' ,function(event){
                 event.preventDefault();
                 event.stopPropagation();
                 self.activeImage = $(this).index();
 				self.loadMainImage();
                 
-                $('.thumbImageBox a img', self.bllObj).stop().css({opacity: 0.3})
+                thumbImageBoxImgObjs.stop().fadeTo(1000, self.options.thumbImageOpacity)
                     .eq(self.activeImage).fadeTo(2000, 1);
 
             });
             
-            $('.thumbImageBox a', self.bllObj).hover(
+            thumbImageBoxAObjs.hover(
                 function(){
-                    $('.thumbImageBox a img', self.bllObj).stop().css({opacity: 0.3});
-                    $('img', this).fadeTo(200, 1);
+                    thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(1000, self.options.thumbImageOpacity);
+                    $('img', this).stop().fadeTo(400, 1);
                 },function(){
-                    $('.thumbImageBox a img', self.bllObj).stop()
-                        .eq(self.activeImage).fadeTo(2000, 1);
-                    $('img', this).fadeTo(200, 0.3);
+                    thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(2000, 1);
+                    $('img', this).stop().fadeTo(800, self.options.thumbImageOpacity);
                 });
             
         },

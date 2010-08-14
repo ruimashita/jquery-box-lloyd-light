@@ -12,10 +12,11 @@
 #boxLloydLight *{
     margin: 0;
     padding: 0;
-    border: none;
-	text-align: center;
+    border: 0 none;
+    text-align: center;
 	line-height: 0;
     background: no-repeat scroll 0 0 transparent;
+    text-decoration: none;
 } 
 
 #boxLloydLight .overlay{ 
@@ -177,6 +178,7 @@
 #boxLloydLight .thumbImageBox a{  
     float: left;
     margin: 0;
+    overflow: hidden;
 }
 
 #boxLloydLightHover .zoom{  
@@ -200,6 +202,7 @@
 
 
 .boxLloydLightTransfer{ 
-   
+    border: 1px solid #333;
     background-color: #000;
+    opacity: 0.3;
 }
