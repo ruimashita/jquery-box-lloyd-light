@@ -73,10 +73,14 @@
                 thumbImageSize:         75,
                 thumbImageOpacity:         0.5,
                 thumbImageMarginSize:   2,
-                thumbTransferSpeed:    200,
+                // thumbnail image effect
+                thumbEffectType:         'Fade',       // (string) Type fo thumbImage Effect. [ Transfer | Fade ]
+                thumbEffectSpeed:    100,
+                
 			    // Configuration related to texts in caption. For example: Image 2 of 8. You can alter either "Image" and "of" texts.
                 txtImage:				'',	// (string) Specify text "Image"
 			    txtOf:					'/'		// (string) Specify text "of"
+
 		    },options);
 
         },
@@ -638,53 +642,76 @@
             //             arguments.callee);
             //     });
 
-            imgObjs.eq(i).boxLloydLightTransfer(
-                {to: thumbImageBoxAObjs.eq(i),
-                 className: "boxLloydLightTransfer"},
-                self.options.thumbTransferSpeed,
-                function(){
-                    thumbImageBoxImgObjs.eq(i).fadeTo(1000, self.options.thumbImageOpacity);
+            if (self.options.thumbEffectType == 'Transfer'){
+                
+
+                imgObjs.eq(i).boxLloydLightTransfer(
+                    {to: thumbImageBoxAObjs.eq(i),
+                     className: "boxLloydLightTransfer"},
+                    self.options.thumbEffectSpeed,
+                    function(){
+                        thumbImageBoxImgObjs.eq(i).fadeTo(1000, self.options.thumbImageOpacity);
+                        i++;
+                        // if completed
+                        if ( i == self.imageArray.length){
+                            thumbImageBoxImgObjs.eq(self.activeImage).fadeTo(1000, 1);
+                        }
+                        imgObjs.eq(i).boxLloydLightTransfer(
+                            {to: thumbImageBoxAObjs.eq(i),
+                             className: "boxLloydLightTransfer"},
+                            self.options.thumbEffectSpeed,
+                            arguments.callee);
+                    });
+                
+            }else if(self.options.thumbEffectType == 'Fade'){
+
+                thumbImageBoxImgObjs.eq(i).fadeTo(
+                    self.options.thumbEffectSpeed,
+                    self.options.thumbImageOpacity, 
+                    function(){
+                    
                     i++;
                     // if completed
                     if ( i == self.imageArray.length){
-                        thumbImageBoxImgObjs.eq(self.activeImage).fadeTo(1000, 1);
+                        thumbImageBoxImgObjs.eq(self.activeImage).fadeTo(self.options.thumbEffectSpeed, 1);
                     }
-                    imgObjs.eq(i).boxLloydLightTransfer(
-                        {to: thumbImageBoxAObjs.eq(i),
-                         className: "boxLloydLightTransfer"},
-                        self.options.thumbTransferSpeed,
-                        arguments.callee);
+                    thumbImageBoxImgObjs.eq(i).fadeTo(self.options.thumbEffectSpeed, self.options.thumbImageOpacity, arguments.callee);
                 });
+               
+         
+              
+
+            }
 
         },
 
-        setThumbEvent: function(){
-            var self = this,
-            thumbImageBoxAObjs = $('.thumbImageBox a'),
-            thumbImageBoxImgObjs = $('img', thumbImageBoxAObjs);
-            
-            // add click event
-            thumbImageBoxAObjs.bind('click' ,function(event){
-                event.preventDefault();
-                event.stopPropagation();
-                self.activeImage = $(this).index();
-				self.loadMainImage();
+            setThumbEvent: function(){
+                var self = this,
+                thumbImageBoxAObjs = $('.thumbImageBox a'),
+                thumbImageBoxImgObjs = $('img', thumbImageBoxAObjs);
                 
-                thumbImageBoxImgObjs.stop().fadeTo(1000, self.options.thumbImageOpacity)
-                    .eq(self.activeImage).fadeTo(2000, 1);
+                // add click event
+                thumbImageBoxAObjs.bind('click' ,function(event){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    self.activeImage = $(this).index();
+				    self.loadMainImage();
+                    
+                    thumbImageBoxImgObjs.stop().fadeTo(1000, self.options.thumbImageOpacity)
+                        .eq(self.activeImage).fadeTo(2000, 1);
 
-            });
-            
-            thumbImageBoxAObjs.hover(
-                function(){
-                    thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(1000, self.options.thumbImageOpacity);
-                    $('img', this).stop().fadeTo(400, 1);
-                },function(){
-                    thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(2000, 1);
-                    $('img', this).stop().fadeTo(800, self.options.thumbImageOpacity);
                 });
-            
-        },
+                
+                thumbImageBoxAObjs.hover(
+                    function(){
+                        thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(1000, self.options.thumbImageOpacity);
+                        $('img', this).stop().fadeTo(400, 1);
+                    },function(){
+                        thumbImageBoxImgObjs.eq(self.activeImage).stop().fadeTo(2000, 1);
+                        $('img', this).stop().fadeTo(800, self.options.thumbImageOpacity);
+                    });
+                
+            },
         
 	    
 		
@@ -715,7 +742,7 @@
 			// Show some elements to avoid conflict with overlay in IE. These elements appear above the overlay.
 	        this.bllObj.remove();
             $('embed, object, select').css({ 'visibility' : 'visible' });
-		},
+		    },
         
         /**
 		   / THIRD FUNCTION
@@ -725,31 +752,31 @@
 		   */
 		getPageSize: function() {
 			var xScroll, yScroll;
-			    if (window.innerHeight && window.scrollMaxY) {	
-				    xScroll = window.innerWidth + window.scrollMaxX;
-				    yScroll = window.innerHeight + window.scrollMaxY;
-			    } else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
-				    xScroll = document.body.scrollWidth;
-				    yScroll = document.body.scrollHeight;
+			if (window.innerHeight && window.scrollMaxY) {	
+				xScroll = window.innerWidth + window.scrollMaxX;
+				yScroll = window.innerHeight + window.scrollMaxY;
+			} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
+				xScroll = document.body.scrollWidth;
+				yScroll = document.body.scrollHeight;
 			    } else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
 				    xScroll = document.body.offsetWidth;
 				    yScroll = document.body.offsetHeight;
 			    }
 			var windowWidth, windowHeight;
-			    if (self.innerHeight) {	// all except Explorer
-				    if(document.documentElement.clientWidth){
-					    windowWidth = document.documentElement.clientWidth; 
-				    } else {
-					    windowWidth = self.innerWidth;
-				    }
-				    windowHeight = self.innerHeight;
-			    } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-				    windowWidth = document.documentElement.clientWidth;
-				    windowHeight = document.documentElement.clientHeight;
-			    } else if (document.body) { // other Explorers
-				    windowWidth = document.body.clientWidth;
-				    windowHeight = document.body.clientHeight;
-			    }	
+			if (self.innerHeight) {	// all except Explorer
+				if(document.documentElement.clientWidth){
+					windowWidth = document.documentElement.clientWidth; 
+				} else {
+					windowWidth = self.innerWidth;
+				}
+				windowHeight = self.innerHeight;
+			} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+				windowWidth = document.documentElement.clientWidth;
+				windowHeight = document.documentElement.clientHeight;
+			} else if (document.body) { // other Explorers
+				windowWidth = document.body.clientWidth;
+				windowHeight = document.body.clientHeight;
+			}	
 			// for small pages with total height less then height of the viewport
 			if(yScroll < windowHeight){
 			    var	pageHeight = windowHeight;
@@ -768,10 +795,10 @@
         
 		/**
 		   / THIRD FUNCTION
-		   * getPageScroll() by quirksmode.com
-		   *
-		   * @return Array Return an array with x,y page scroll values.
-		   */
+		       * getPageScroll() by quirksmode.com
+		       *
+		       * @return Array Return an array with x,y page scroll values.
+		       */
 		getPageScroll: function() {
 			var xScroll, yScroll;
 			if (self.pageYOffset) {
@@ -804,21 +831,21 @@
     // from ui effects transfer
     $.fn.boxLloydLightTransfer = function(options, duration, callback){
         var o = {
-			options: options,
+			    options: options,
 			duration: duration,
 			callback: callback
 		};
 
 	    return this.queue(function() {
 		    var elem = $(this),
-			    target = $(o.options.to),
-			    endPosition = target.offset(),
+			target = $(o.options.to),
+			endPosition = target.offset(),
 			animation = {
-				top: endPosition.top,
+				    top: endPosition.top,
 				left: endPosition.left,
 				height: target.innerHeight(),
-				    width: target.innerWidth()
-			    },
+				width: target.innerWidth()
+			},
 			startPosition = elem.offset(),
 			transfer = $('<div class="ui-effects-transfer"></div>')
 				.appendTo(document.body)
